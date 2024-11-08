@@ -22,8 +22,8 @@
 
 Adicionar dependência no seu projeto
 
-Para utilizar esta API, primeiro gere o arquivo .jar à partir do comando `mvn clean package`.
-Segundo, adicione a dependência no arquivo pom.xml de seu projeto Maven.
+Para utilizar esta API, primeiro (caso ainda não tenha) clone o repositório do GitHub `https://github.com/gvfbossa/bws-base-api.git`. Depois, gere o arquivo .jar à partir do comando `mvn clean package`.
+Em seguida, adicione a dependência no arquivo pom.xml de seu projeto Maven.
     
     <dependency>
         <groupId>br.com.bossawebsolutions</groupId>
