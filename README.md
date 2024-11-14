@@ -8,15 +8,16 @@
     Sistema de permissões: Suporte a diferentes papéis e permissões de usuários.
     API genérica: Totalmente configurável e sem dependências de implementação específica para a interface AppUser.
 
+### Atualização da API
+Para atualizar a api, alterar a `versão` no `pom.xml` e rodar o comando `mvn clean deploy`.
+
 ### Integração com Outros Projetos
 
 #### Esta API foi projetada para ser agnóstica quanto à implementação concreta da interface AppUser. Ou seja, você pode facilmente criar sua própria implementação da interface AppUser em seu projeto e integrar com a API.
 ### Requisitos
 
-    Java 8 ou superior.
-    Spring Boot 3.x
-    Dependência do spring-security para autenticação JWT
-    Dependência do jackson para serialização/deserialização de objetos.
+    A API foi construída sobre a versão 17 do Java.
+    Utiliza Spring Boot 3.3.5
 
 ## Como Integrar
 

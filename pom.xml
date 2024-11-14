@@ -11,7 +11,7 @@
 
 	<groupId>br.com.bossawebsolutions.base-api</groupId>
 	<artifactId>bws-base-api</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1.1</version>
 
 	<name>bws-base-api</name>
 	<description>Base authentication API</description>
@@ -221,6 +221,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<executable>false</executable>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
