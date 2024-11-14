@@ -22,16 +22,20 @@
 
 Adicionar dependência no seu projeto
 
-Para utilizar esta API, primeiro (caso ainda não tenha) clone o repositório do GitHub `https://github.com/gvfbossa/bws-base-api.git`. Depois, gere o arquivo .jar à partir do comando `mvn clean package`.
-Em seguida, adicione a dependência no arquivo pom.xml de seu projeto Maven.
-    
+Para utilizar esta API, basta adicionar a dependência publicada no Maven Central, ao arquivo `pom.xml` ou `build.gradle` de seu projeto.
+
+### Maven:
     <dependency>
         <groupId>br.com.bossawebsolutions</groupId>
         <artifactId>bws-base-api</artifactId>
-        <version>1.0.0</version>
-        <scope>system</scope>
-        <systemPath>${project.basedir}/libs/bws-base-api-0.0.1-SNAPSHOT.jar</systemPath>
+        <version>0.0.1</version>
     </dependency>
+
+### Gradle:
+
+    dependencies {
+        implementation 'br.com.bossawebsolutions:bws-base-api:0.0.1'
+    }
 
 ## Configuração da Variável de Ambiente
 
