@@ -25,11 +25,13 @@ Adicionar dependência no seu projeto
 
 Para utilizar esta API, basta adicionar a dependência publicada no Maven Central, ao arquivo `pom.xml` ou `build.gradle` de seu projeto.
 
+A versão mais atual está no repositório `https://central.sonatype.com/artifact/br.com.bossawebsolutions.base-api/bws-base-api`
+
 ### Maven:
     <dependency>
         <groupId>br.com.bossawebsolutions</groupId>
         <artifactId>bws-base-api</artifactId>
-        <version>0.0.1</version>
+        <version>${VERIFICAR_VERSÃO}</version>
     </dependency>
 
 ### Gradle:
