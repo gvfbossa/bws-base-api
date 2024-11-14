@@ -37,7 +37,7 @@ A versão mais atual está no repositório `https://central.sonatype.com/artifac
 ### Gradle:
 
     dependencies {
-        implementation 'br.com.bossawebsolutions:bws-base-api:0.0.1'
+        implementation 'br.com.bossawebsolutions:bws-base-api:${VERIFICAR_VERSÃO}'
     }
 
 ## Configuração da Variável de Ambiente
