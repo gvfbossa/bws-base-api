@@ -74,7 +74,7 @@ Exemplo de implementação:
             return roles;
         }
 
-        // Outros métodos de acordo com suas necessidades
+        // Outras properties e métodos de acordo com suas necessidades
     }
 
 A role é um Set<String> que deve ser configurado no lado consumidor da API. Você pode mapear os papéis conforme necessário em seu projeto, como "ADMIN", "USER", etc.
@@ -92,33 +92,41 @@ A API não assume um repositório específico, então você também deve fornece
     import com.seuprojeto.model.MyAppUser;
     import org.springframework.data.jpa.repository.JpaRepository;
 
-    public interface MyAppUserRepository extends JpaRepository<MyAppUser, Integer> {
-        MyAppUser findByUsername(String username);
+    public interface MyAppUserRepository extends JpaRepository<Cliente, Long>, AppUserRepository {
+        
     }
 
 ## Configuração do ObjectMapper
 
 A API usa a biblioteca Jackson para serializar e desserializar objetos JSON. Como a interface AppUser é genérica e a implementação pode variar, você deve mapear a interface para sua implementação concreta durante a configuração da API.
 
-### Configuração do ObjectMapper:
-
 Em seu projeto, registre a implementação concreta de AppUser que será usada. Isso garante que a API sabe como desserializar objetos AppUser.
 
     import br.com.bossawebsolutions.base_api.infrastructure.web.config.CustomObjectMapper;
-    import com.seuprojeto.model.MyAppUser;
+    import br.com.bossawebsolutions.base_api.model.AppUser;
+    import path.to.your.class.that.will.impl.appuser.AppUserImpl;
+    import jakarta.annotation.PostConstruct;
+    import org.springframework.context.annotation.Configuration;
     
-    public class ApplicationConfig {
-        public static void main(String[] args) {
-            // Cria o mapeamento entre o tipo de AppUser e a implementação concreta
-            Map<String, Class<? extends AppUser>> appUserTypeMapping = new HashMap<>();
-            appUserTypeMapping.put("myAppUser", MyAppUser.class);
+    import java.util.Map;
+    
+    @Configuration
+    public class AppConfig {
 
-            // Registra a implementação de AppUser
+        @PostConstruct
+        public void init() {
+            Map<String, Class<? extends AppUser>> appUserTypeMapping = Map.of(
+                    "AppUserImpl", AppUserImpl.class
+            );
             CustomObjectMapper.registerAppUserImplementations(appUserTypeMapping);
-            
-            // Agora você pode usar o ObjectMapper configurado na sua aplicação
         }
     }
+
+## Configuração da classe da Aplicação
+
+Em seu projeto que incorpora a API, lembre-se de adicionar na classe que contém a Annotation `@SpringBootApplication`, a seguinte Annotation:
+
+    @ComponentScan(basePackages = {"br.com.bossawebsolutions.base_api", "package.que.contem.a.config.descrita.abaixo"})
 
 ### Módulo de Autenticação e JWT
 
