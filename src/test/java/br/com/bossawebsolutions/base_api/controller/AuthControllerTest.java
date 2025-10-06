@@ -50,7 +50,7 @@ public class AuthControllerTest {
         roleSet.add("ADMIN");
         mockAppUser = new TestAppUser(
                 "user",
-                passwordEncoder.encode("password"),
+                passwordEncoder.encode(new String(java.util.Base64.getDecoder().decode("password"))),
                 roleSet
         );
 
