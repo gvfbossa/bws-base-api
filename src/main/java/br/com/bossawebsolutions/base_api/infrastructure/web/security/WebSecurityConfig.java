@@ -77,7 +77,11 @@ public class WebSecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.csrf(AbstractHttpConfigurer::disable)
-				.cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+                    config.addExposedHeader("Authorization");
+                    return config;
+                }))
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(openEndpointsList.toArray(new String[0])).permitAll()
 						.anyRequest().authenticated()
