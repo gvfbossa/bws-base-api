@@ -9,5 +9,6 @@ public class BwsBaseApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BwsBaseApiApplication.class, args);
 	}
+    //TODO deploy no maven -  mvn clean deploy -P release
 
 }
