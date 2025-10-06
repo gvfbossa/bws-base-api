@@ -2,6 +2,7 @@ package br.com.bossawebsolutions.base_api.infrastructure.web.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,8 +13,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import  org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.List;
 
 /**
  * Configuração de segurança do Spring Security para autenticação e autorização JWT.
@@ -23,6 +27,9 @@ public class WebSecurityConfig {
 	private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
 	private final UserDetailsServiceImpl userDetailsService;
+
+    @Value("${open.endpoints.list:}")
+    List<String> openEndpointsList;
 
 	/**
 	 * @param userDetailsService implementação personalizada para carregar os detalhes do usuário.
@@ -72,7 +79,7 @@ public class WebSecurityConfig {
 				.csrf(AbstractHttpConfigurer::disable)
 				.cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/login").permitAll()
+						.requestMatchers(openEndpointsList.toArray(new String[0])).permitAll()
 						.anyRequest().authenticated()
 				)
 				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

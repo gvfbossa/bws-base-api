@@ -54,8 +54,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		try {
 			ObjectMapper mapper = CustomObjectMapper.getInstance();
 			AppUser appUser = mapper.readValue(request.getInputStream(), AppUser.class);
-
-			UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(appUser.getUsername(), appUser.getPassword());
+            String decodedPassword = new String(java.util.Base64.getDecoder().decode(appUser.getPassword()));
+			UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(appUser.getUsername(), decodedPassword);
 			return authenticationManager.authenticate(upat);
 		
 		} catch (IOException e) {

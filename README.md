@@ -40,10 +40,11 @@ A versão mais atual está no repositório `https://central.sonatype.com/artifac
         implementation 'br.com.bossawebsolutions:bws-base-api:${VERIFICAR_VERSÃO}'
     }
 
-## Configuração da Variável de Ambiente
+## Configuração das Variaveis de Ambiente
 
-Esta API só irá funcionar se houver uma Variável de Ambiente configurada, tanto para os ambientes de dev como prod.
-Ela deve ter a chave `SECRET_KEY`
+Esta API só irá funcionar se houver uma Variaveis de Ambiente configuradas, tanto para os ambientes de dev como prod.
+Ela deve ter a chave `SECRET_KEY`: `secret.key=${SECRET_KEY:`
+E a lista de endpoints liberados parametrizáveis: `open.endpoints.list=/login,/demais-endpoints`
 
 ## Implementação de AppUser
 
@@ -132,7 +133,7 @@ Em seu projeto que incorpora a API, lembre-se de adicionar na classe que contém
 
 A API vem com um módulo de autenticação JWT que você pode usar diretamente ou estender conforme necessário.
 
-    Autenticação de usuário: A função de autenticação espera um JSON contendo username e password.
+    Autenticação de usuário: A função de autenticação espera um JSON contendo username e password (Encodado em Base64).
     Geração de JWT: Após a autenticação bem-sucedida, um token JWT é gerado e retornado para o cliente.
 
 Exemplo de endpoint de login (Spring Boot):
