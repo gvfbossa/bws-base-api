@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -97,7 +98,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 					.signWith(SecurityConstants.getSecretKey(), Jwts.SIG.HS512)
 					.compact();
 
-			response.addHeader(SecurityConstants.AUTHORIZATION_HEADER, SecurityConstants.TOKEN_PREFIX + jwtToken);
+            Cookie accessTokenCookie = new Cookie("access_token", jwtToken);
+            accessTokenCookie.setHttpOnly(true);
+            accessTokenCookie.setSecure("https".equals(request.getScheme()));
+            accessTokenCookie.setPath("/");
+            accessTokenCookie.setMaxAge((int) (SecurityConstants.EXPIRATION_TIME / 1000));
+            accessTokenCookie.setAttribute("SameSite", "Strict");
+
+            response.addCookie(accessTokenCookie);
 		} catch (Exception e) {
 			logger.error("Erro ao gerar o token JWT: {}", e.getMessage(), e);
 			throw new ServletException("Erro ao gerar o token JWT", e);
