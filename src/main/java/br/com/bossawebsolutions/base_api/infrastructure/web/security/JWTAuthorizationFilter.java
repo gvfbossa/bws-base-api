@@ -1,7 +1,8 @@
 	package br.com.bossawebsolutions.base_api.infrastructure.web.security;
 
 	import io.jsonwebtoken.Jwts;
-	import org.slf4j.Logger;
+    import jakarta.servlet.http.Cookie;
+    import org.slf4j.Logger;
 	import org.slf4j.LoggerFactory;
 	import org.springframework.security.authentication.AuthenticationManager;
 	import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,7 +44,7 @@
 		protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 				throws IOException, ServletException {
 
-			String token = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
+            String token = resolveToken(request);
 
 			if (token != null && token.startsWith(SecurityConstants.TOKEN_PREFIX)) {
 				try {
@@ -53,6 +54,8 @@
 					}
 				} catch (Exception e) {
 					logger.error("Erro ao autenticar com o token JWT: {}", e.getMessage(), e);
+                    SecurityContextHolder.clearContext();
+                    clearCookie(response);
 				}
 			}
 			chain.doFilter(request, response);
@@ -69,7 +72,7 @@
 				String username = Jwts.parser()
 					.verifyWith(SecurityConstants.getSecretKey())
 					.build()
-					.parseSignedClaims(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
+					.parseSignedClaims(token)
 					.getPayload()
 					.getSubject();
 
@@ -81,4 +84,35 @@
 			}
 			return null;
 		}
+
+        /**
+         * Extrai o token JWT do cookie OU do header (pra compatibilidade com mobile/postman)
+         */
+        private String resolveToken(HttpServletRequest request) {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("access_token".equals(cookie.getName())) {
+                        return cookie.getValue();
+                    }
+                }
+            }
+            String header = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
+            if (header != null && header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+                return header.substring(SecurityConstants.TOKEN_PREFIX.length());
+            }
+            return null;
+        }
+
+        /**
+         * Limpa o cookie se o token estiver expirado/inválido
+         */
+        private void clearCookie(HttpServletResponse response) {
+            Cookie cookie = new Cookie("access_token", null);
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
+        }
+
 	}
