@@ -46,7 +46,9 @@
 
             String token = resolveToken(request);
 
-			if (token != null && token.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+			if (token != null) {
+                if (token.startsWith(SecurityConstants.TOKEN_PREFIX))
+                    token = token.split(" ")[1];
 				try {
 					UsernamePasswordAuthenticationToken authentication = getAuthentication(token);
 					if (authentication != null) {
