@@ -44,7 +44,8 @@ A versão mais atual está no repositório `https://central.sonatype.com/artifac
 
 Esta API só irá funcionar se houver uma Variaveis de Ambiente configuradas, tanto para os ambientes de dev como prod.
 Ela deve ter a chave `SECRET_KEY`: `secret.key=${SECRET_KEY:`
-E a lista de endpoints liberados parametrizáveis: `open.endpoints.list=/login,/demais-endpoints`
+A lista de endpoints liberados parametrizáveis: `open.endpoints.list=/login,/demais-endpoints`
+E a lista de origens liberadas (para autenticação via Cookie): `allowed.origins.list=/http://localhost:4200`
 
 ## Implementação de AppUser
 

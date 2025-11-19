@@ -31,6 +31,9 @@ public class WebSecurityConfig {
     @Value("${open.endpoints.list:}")
     List<String> openEndpointsList;
 
+    @Value("${allowed.origins.list:}")
+    List<String> allowedOriginsList;
+
 	/**
 	 * @param userDetailsService implementação personalizada para carregar os detalhes do usuário.
 	 */
@@ -79,7 +82,9 @@ public class WebSecurityConfig {
 				.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
-                    config.addExposedHeader("Authorization");
+                    config.setAllowCredentials(true);
+                    config.addExposedHeader("Set-Cookie");
+                    config.setAllowedOrigins(allowedOriginsList);
                     return config;
                 }))
 				.authorizeHttpRequests(auth -> auth
